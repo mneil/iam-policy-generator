@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "mocha --file tests/setup.js tests/**/*.js"
   },
   "packages": {},

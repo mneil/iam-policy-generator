@@ -1,6 +1,6 @@
 const cheerio = require('cheerio');
 const config = require('config');
-const request = require('request');
+const request = require('request-promise-native');
 
 /**
  * Get a list of APIs from the main IAM reference page
@@ -24,7 +24,7 @@ function getAPIs(contents) {
  */
 function getReferencePolicies() {
   const appConfig = config.get('scraping');
-  return request.get(appConfig.api.url);
+  return request(appConfig.api.url);
 }
 
 /**
@@ -43,3 +43,5 @@ module.exports = {
   getReferencePolicies,
   main,
 };
+
+main().then(console.log);
