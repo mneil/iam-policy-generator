@@ -1,6 +1,6 @@
-const cheerio = require('cheerio')
+const cheerio = require('cheerio');
 const config = require('config');
-const request = require('request')
+const request = require('request');
 
 /**
  * Get a list of APIs from the main IAM reference page
@@ -13,9 +13,7 @@ function getAPIs(contents) {
   const appConfig = config.get('scraping');
   const $ = cheerio.load(contents);
   const anchors = $(appConfig.api.selector);
-  const list = anchors.map((_, element) => {
-    return $(element).attr('href');
-  });
+  const list = anchors.map((_, element) => $(element).attr('href'));
   return list.get();
 }
 /**
@@ -33,9 +31,8 @@ function getReferencePolicies() {
  * Application entrypoint
  */
 async function main() {
-
-  const iamReferencePolicies = await getReferencePolicies()
-  const apis = getAPIs(iamReferencePolicies)
+  const iamReferencePolicies = await getReferencePolicies();
+  const apis = getAPIs(iamReferencePolicies);
 
   return apis;
 }
@@ -45,4 +42,4 @@ module.exports = {
   getAPIs,
   getReferencePolicies,
   main,
-}
+};

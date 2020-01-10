@@ -1,0 +1,14 @@
+{
+  "extends": "airbnb-base",
+  "overrides": [
+    {
+      "files": ["tests/*.js", "tests/**/*.js"],
+      "env": {
+        "mocha": true
+      },
+      "rules": {
+        "prefer-arrow-callback": "off"
+      }
+    }
+  ]
+}
