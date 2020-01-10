@@ -44,4 +44,4 @@ module.exports = {
   main,
 };
 
-main().then(console.log);
+// main().then(console.log);
