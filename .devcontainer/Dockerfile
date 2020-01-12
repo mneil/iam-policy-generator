@@ -10,19 +10,19 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # The node image comes with a base non-root 'node' user which this Dockerfile
 # gives sudo access. However, for Linux, this user's GID/UID must match your local
-# user UID/GID to avoid permission issues with bind mounts. Update USER_UID / USER_GID 
+# user UID/GID to avoid permission issues with bind mounts. Update USER_UID / USER_GID
 # if yours is not 1000. See https://aka.ms/vscode-remote/containers/non-root-user.
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
 
 # Configure apt and install packages
 RUN apt-get update \
-    && apt-get -y install --no-install-recommends apt-utils dialog 2>&1 \ 
+    && apt-get -y install --no-install-recommends apt-utils dialog 2>&1 \
     #
     # Verify git and needed tools are installed
     && apt-get -y install git iproute2 procps \
     #
-    # Remove outdated yarn from /opt and install via package 
+    # Remove outdated yarn from /opt and install via package
     # so it can be easily updated via apt-get upgrade yarn
     && rm -rf /opt/yarn-* \
     && rm -f /usr/local/bin/yarn \
@@ -51,6 +51,8 @@ RUN apt-get update \
 
 # Switch back to dialog for any ad-hoc use of apt-get
 ENV DEBIAN_FRONTEND=
+
+ENV NODE_ENV=development
 
 # Puppeteer Debian Dependencies
 RUN apt-get update -y && apt-get install -y \

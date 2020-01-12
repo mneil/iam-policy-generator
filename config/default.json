@@ -1,7 +1,12 @@
 {
+  "logging": {
+    "level": "info"
+  },
   "scraping": {
+    "concurrency": 10,
     "api": {
-      "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_actions-resources-contextkeys.partial.html",
+      "base_url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/",
+      "reference_path": "./reference_policies_actions-resources-contextkeys.partial.html",
       "selector": ".highlights ul li a"
     }
   }

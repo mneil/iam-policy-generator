@@ -1,12 +1,11 @@
 require('chai').should();
-const index = require('../../index');
+const scrape = require('../../src/scrape');
 
-describe('Index', function Index() {
-
+describe('Scrape', function Index() {
   describe('#getAPIs()', function getAPIs() {
     it('should return list of apis policy content', function shouldWork() {
       const policies = this.fixtures.referencePolicies(this);
-      const apis = index.getAPIs(policies);
+      const apis = scrape.getAPIs(policies);
       apis.should.eql(this.fixtures.apiList);
     });
   });
