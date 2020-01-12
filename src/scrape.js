@@ -70,4 +70,5 @@ module.exports = {
   getAPIs,
   getReferencePolicies,
   getPages,
+  getPage,
 };
