@@ -1,13 +1,14 @@
 const config = require('config');
 const winston = require('winston');
 
+// create a logger that we'll use as the default
 const logger = winston.createLogger({
   level: config.get('logging.level'),
   format: winston.format.combine(
-    winston.format.colorize(),
-    winston.format.timestamp(),
-    winston.format.splat(),
-    winston.format.printf(({
+    winston.format.colorize(), // default pretty colors
+    winston.format.timestamp(), // add a timestamp
+    winston.format.splat(), // string interpolate %s and %d
+    winston.format.printf(({ // format the output to be what we want
       level, message, label, timestamp,
     }) => `${timestamp} [${label}] ${level}: ${message}`),
   ),
@@ -16,10 +17,12 @@ const logger = winston.createLogger({
 });
 
 if (process.env.NODE_ENV !== 'production') {
+  // add a console transport for non-production logging
   logger.add(new winston.transports.Console());
 } else {
-  // production logstash format
+  // add a production logstash format log
   logger.add(new winston.transports.Console({
+    // override the default (human readable) format
     format: winston.format.combine(
       winston.format.splat(),
       winston.format.timestamp(),
