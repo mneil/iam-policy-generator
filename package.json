@@ -9,7 +9,9 @@
   },
   "scripts": {
     "start": "node src/index.js",
-    "test": "mocha --file tests/setup.js tests/**/*.js"
+    "test": "npm run unit && npm run integration",
+    "unit": "mocha --file tests/setup.js tests/unit/**/*.js",
+    "integration": "mocha --file tests/setup.js tests/integration/**/*.js"
   },
   "packages": {},
   "author": "",

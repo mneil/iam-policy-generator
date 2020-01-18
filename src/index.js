@@ -1,18 +1,18 @@
-const scrape = require('./scrape');
+// const scrape = require('./data/generate');
 
-/**
- * Application entrypoint
- */
-async function main() {
-  const iamReferencePolicies = await scrape.getReferencePolicies();
-  const apis = scrape.getAPIs(iamReferencePolicies);
+// /**
+//  * Application entrypoint
+//  */
+// async function main() {
+//   const iamReferencePolicies = await scrape.getReferencePolicies();
+//   const apis = scrape.getAPIs(iamReferencePolicies);
 
-  return apis;
-}
+//   return apis;
+// }
 
-// exports for testing
-module.exports = {
-  main,
-};
+// // exports for testing
+// module.exports = {
+//   main,
+// };
 
-main().then(console.log);
+// main().then(console.log);

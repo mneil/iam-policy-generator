@@ -1,11 +1,11 @@
 require('chai').should();
 const nock = require('nock');
-const scrape = require('../../src/scrape');
+const scrape = require('../../src/data/generate');
 
 describe('Scrape', function Index() {
   describe('#getAPIs()', function getAPIs() {
-    it('should return list of apis policy content', function shouldWork() {
-      const policies = this.fixtures.referencePolicies(this);
+    it('should return list of apis policy content', async function shouldWork() {
+      const policies = await this.fixtures.referencePolicies(this);
       const apis = scrape.getAPIs(policies);
       apis.should.eql(this.fixtures.apiList);
     });

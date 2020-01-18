@@ -1,8 +1,10 @@
 const async = require('async');
 const cheerio = require('cheerio');
 const config = require('config');
+const fs = require('fs');
+const path = require('path');
 const request = require('request-promise-native');
-const logging = require('./logging');
+const logging = require('../logging');
 
 const logger = logging.child({ label: 'scrape' });
 /**
@@ -15,23 +17,39 @@ function getPage(url) {
   return request(strUrl);
 }
 /**
+ * Write a file to disk at path
+ * @param {String} filePath
+ * @param {String} contents
+ */
+function writeToDisk(filePath, contents) {
+  return new Promise((resolve, reject) => {
+    fs.writeFile(filePath, contents, { encoding: 'utf8' }, (err) => {
+      if (err) return reject(err);
+      return resolve();
+    });
+  });
+}
+/**
  * Get pages returns the contents of mutiple html documents
  * given a list of urls and a concurrency
  */
-async function getPages(pages, concurrency = 10) {
+async function getPages(pages, concurrency = 10, targetDir = 'data') {
   logging.info('getPages(len(pages):%d, %d)', pages.length, concurrency);
   return new Promise((resolve, reject) => {
     const q = async.queue((task, next) => {
       logging.debug('processing: %s', task);
       const appConfig = config.get('scraping');
-      const url = new URL(appConfig.api.reference_path, appConfig.api.base_url);
-      getPage(url).then(next);
+      const url = new URL(task, appConfig.api.base_url);
+      logging.debug('url: %s', url.toString());
+      getPage(url).then((page) => {
+        writeToDisk(path.join(targetDir, task), page).then(next);
+      });
     }, concurrency);
     // assign a callback
     q.drain(resolve);
     // The entire thing fails
-    q.error((err, task) => {
-      logging.error('getPages() task error', err, task);
+    q.error((err) => {
+      logging.error('getPages() task error: %s', err);
       reject();
     });
     // add all requests to the queue
@@ -65,10 +83,23 @@ function getReferencePolicies() {
   const url = new URL(appConfig.api.reference_path, appConfig.api.base_url);
   return getPage(url);
 }
+/**
+ * Application entrypoint
+ */
+async function main() {
+  const iamReferencePolicies = await getReferencePolicies();
+  const apis = getAPIs(iamReferencePolicies);
+
+  return apis;
+}
+
 // exports for testing
 module.exports = {
   getAPIs,
   getReferencePolicies,
   getPages,
   getPage,
+  main,
 };
+
+// main().then(console.log);
