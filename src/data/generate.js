@@ -57,6 +57,16 @@ async function getPages(pages, concurrency = 10, targetDir = 'data') {
   });
 }
 /**
+ * Takes a string ending with .html and prepends .partial
+ * for AWS url reference
+ * @param {String} uri
+ */
+function getPartial(uri) {
+  const parts = uri.split('.');
+  parts.splice(parts.length - 1, 0, 'partial');
+  return parts.join('.');
+}
+/**
  * Get a list of APIs from the main IAM reference page
  * @param {String} contents : String containing html content of IAM reference page
  *
@@ -86,9 +96,12 @@ function getReferencePolicies() {
 /**
  * Application entrypoint
  */
-async function main() {
+async function scrape() {
   const iamReferencePolicies = await getReferencePolicies();
+  await writeToDisk('data/reference.html', iamReferencePolicies);
   const apis = getAPIs(iamReferencePolicies);
+  const partials = apis.map(getPartial);
+  await getPages(partials, 10, 'data');
 
   return apis;
 }
@@ -99,7 +112,8 @@ module.exports = {
   getReferencePolicies,
   getPages,
   getPage,
-  main,
+  getPartial,
+  scrape,
 };
 
 // main().then(console.log);

@@ -1,4 +1,6 @@
 require('chai').should();
+const fs = require('fs');
+const util = require('util');
 const scrape = require('../../src/data/generate');
 
 describe('Scrape', function Index() {
@@ -6,15 +8,12 @@ describe('Scrape', function Index() {
     it('should return multiple documents', async function shouldWork() {
       const index = Math.floor(Math.random() * this.fixtures.apiList.length - 10);
       const pages = this.fixtures.apiList.slice(index, index + 5); // get 5 random pages
-      console.log(index, pages);
-      const contents = await scrape.getPages(pages, 5, 'tests/data');
-      // console.log(contents);
-      // const url = new URL('search', 'https://google.com');
-      // nock(url.origin)
-      //   .get(url.pathname)
-      //   .reply(200, 'foo bar');
-      // const contents = await scrape.getPage(url);
-      // contents.should.eql('foo bar');
+      const partials = pages.map(scrape.getPartial);
+      await scrape.getPages(partials, 5, 'tests/data');
+      await Promise.all(pages.map((page) => {
+        const fsP = util.promisify(fs.exists);
+        return fsP(`tests/data/${page}`);
+      }));
     });
   });
 });

@@ -1,5 +1,4 @@
 require('chai').should();
-const fs = require('fs');
 const fixtures = require('./fixtures/index');
 const logging = require('../src/logging');
 
