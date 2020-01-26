@@ -1,7 +1,7 @@
 require('chai').should();
 const fs = require('fs');
 const util = require('util');
-const scrape = require('../../src/data/generate');
+const scrape = require('../../src/data/download');
 
 describe('Scrape', function Index() {
   describe('#getPages()', async function getPages() {

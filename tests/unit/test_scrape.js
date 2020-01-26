@@ -3,7 +3,7 @@ const config = require('config');
 const fs = require('fs');
 const util = require('util');
 const nock = require('nock');
-const scrape = require('../../src/data/generate');
+const scrape = require('../../src/data/download');
 
 describe('Scrape', function Index() {
   describe('#getAPIs()', function getAPIs() {
